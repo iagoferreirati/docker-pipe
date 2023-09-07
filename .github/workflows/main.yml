@@ -1,0 +1,20 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Defina a branch que acionará o workflow
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest  # Pode escolher outro ambiente, como macOS ou Windows
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker build -t iagomauricio/app-tasks:latest .
+          docker push iagomauricio/app-tasks:latest
